@@ -1,0 +1,38 @@
+version: "3.9" # optional since v1.27.0
+
+# Redes   
+networks:
+  back-tier:
+    name: red_org
+    driver: bridge
+    ipam:
+      driver: default
+
+# Servicios
+services:
+  # Contenedor de la WEB.
+  http:
+    container_name: nginx_ctn
+    # Opciones de restart: "no" | always | on-failure | unless-stopped
+    restart: "no"
+    build:
+      # Ruta de la carpeta con el dockerfile de la imgen a construir
+      context: ./http
+      # Nombre del archivo dockerfile
+      dockerfile: Dockerfile
+      args:
+        tag-version: 11
+    environment:
+      POSTGRESQL_USERNAME: "giancarlo"
+    ports:
+      - "8000:80"
+    volumes:
+      - ./data_web:/var/www
+    networks:
+      back-tier:
+        aliases:
+          - nginx.host
+
+# Archivos           
+volumes:
+  data_web: {}

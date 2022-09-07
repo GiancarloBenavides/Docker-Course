@@ -1,0 +1,12 @@
+body {
+    background-color: #030240;
+    color: white
+}
+
+section>header {
+    color: gray;
+}
+
+article>ul {
+    color: yellow;
+}
