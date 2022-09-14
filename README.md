@@ -77,7 +77,7 @@ networks:
         name: red_org
         # Tipo de red
         driver: bridge
-        # Gestión IP 
+            # Gestión IP 
             ipam:
                 driver: default
                 config:

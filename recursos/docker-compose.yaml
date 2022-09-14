@@ -1,14 +1,21 @@
 version: "3.9" # optional since v1.27.0
 
-# Redes   
+# Declaración de las redes que se van a crear   
 networks:
+  # Red para los contenedores (back-tier es un label)
   back-tier:
+    # Nombre de la red
     name: red_org
+    # Tipo de red
     driver: bridge
+    # Gestión IP 
     ipam:
       driver: default
+      config:
+        subnet: 192.168.1.0/24
+        gateway: 192.168.1.254
 
-# Servicios
+# Declaración de servicios que se van a crear
 services:
   # Contenedor de la WEB.
   http:
