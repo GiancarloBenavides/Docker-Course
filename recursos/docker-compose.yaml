@@ -27,6 +27,7 @@ services:
       context: ./http
       # Nombre del archivo dockerfile
       dockerfile: Dockerfile
+      # argumentos docker compose
       args:
         tag-version: 11
     environment:
