@@ -11,36 +11,42 @@ networks:
     # Gestión IP 
     ipam:
       driver: default
+      # Configuración de red IPv4 y puerta de enlace 
       config:
-        subnet: 192.168.1.0/24
-        gateway: 192.168.1.254
+        - subnet: 192.168.1.0/24
+          gateway: 192.168.1.254
+
 
 # Declaración de servicios que se van a crear
 services:
-  # Contenedor de la WEB.
+  # Contenedor del servicio WEB (http es un label)
   http:
     container_name: nginx_ctn
     # Opciones de restart: "no" | always | on-failure | unless-stopped
     restart: "no"
     build:
-      # Ruta de la carpeta con el dockerfile de la imgen a construir
+      # Ruta de la carpeta con el dockerfile para construir la imgen 
       context: ./http
-      # Nombre del archivo dockerfile
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
       dockerfile: Dockerfile
-      # argumentos docker compose
+      # Argumentos para que docker-engine compile la imagen 
       args:
         tag-version: 11
+    # Variables de entorno de ejecucion del contenedor
     environment:
-      POSTGRESQL_USERNAME: "giancarlo"
+      DOCKER_MASTER: "giancarlo"
+    # Puertos que serán expuestos en ejecución por el contenedor
     ports:
       - "8000:80"
+    # Carpetas compartidas del host con el contenedor  
     volumes:
-      - ./data_web:/var/www
+      - ./http/www:/var/www
+    # Red a la que se conecta el contenedor
     networks:
       back-tier:
         aliases:
-          - nginx.host
+          - org.organization.nginx-host
 
-# Archivos           
+# Carpetas compartidas         
 volumes:
   data_web: {}

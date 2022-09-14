@@ -6,7 +6,7 @@ FROM debian:11
 # Instalacion de el servidor web
 RUN apt-get update && apt-get install -y nginx openssh-server
 # Copia de los archivos que se van a servir
-COPY ./organization.org /var/www/organization.org
+COPY ./www/organization.org /var/www/organization.org
 # Establece los permisos para que el servidor pueda servir los archivos
 RUN chmod -R 755 /var/www & chown -R $USER:$USER /var/www
 # Copia de los archivos de configuracion del host virtual de nginx
