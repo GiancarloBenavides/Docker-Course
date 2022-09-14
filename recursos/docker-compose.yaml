@@ -50,4 +50,4 @@ services:
 
 # Volumenes creados         
 volumes:
-  data_web: {}
+  www: {}
