@@ -38,7 +38,8 @@ services:
     # Puertos que serán expuestos en ejecución por el contenedor
     ports:
       - "8000:80"
-    # Carpetas compartidas del host con el contenedor  
+      - "8020:20"
+    # Carpetas compartidas entre el host y el contenedor  
     volumes:
       - ./http/www:/var/www
     # Red a la que se conecta el contenedor
@@ -47,6 +48,6 @@ services:
         aliases:
           - org.organization.nginx-host
 
-# Carpetas compartidas         
+# Volumenes creados         
 volumes:
   data_web: {}
