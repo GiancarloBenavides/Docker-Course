@@ -98,7 +98,7 @@ services:
         aliases:
           - org.organization.web-host
 
-# Volumenes creados         
+# Volumenes creados en la carpeta del proyecto         
 volumes:
   db: {}
   admin: {}
