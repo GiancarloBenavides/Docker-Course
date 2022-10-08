@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "pos_dsn",
+            "Group": "Servers",
+            "Host": "postgres",
+            "Port": 5432,
+            "MaintenanceDB": "tele",
+            "Username": "gncdev",
+            "Comment": "Este servidor de diseño se incluyo en un archivo JSON"
+        }
+    }
+}
