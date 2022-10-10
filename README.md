@@ -115,7 +115,7 @@ En la ejecución de un docker-compose el [motor de docker][21_0] ejecuta uno o v
 
 [21_0]:https://docs.docker.com/engine/
 
-## <code>Ejemplo:</code> run from docker-compose.yml
+## <code>Ejemplo:</code> run from docker-compose.yaml
 
 ```sh
 # Run docker-without-compose
@@ -130,7 +130,7 @@ docker rm ng-server
 # Run docker-compose
 docker compose up
 # Stop docker-compose
-docker compose -f ./docker-compose.yml down
+docker compose -f ./docker-compose.yaml down
 ```
 
 

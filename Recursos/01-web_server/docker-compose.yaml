@@ -21,14 +21,14 @@ networks:
 services:
   # Contenedor del servicio WEB (http es un label)
   http:
-    container_name: nginx_ctn
+    container_name: debian_ctn
     # Opciones de restart: "no" | always | on-failure | unless-stopped
     restart: "no"
     build:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
-      context: ./http
+      context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: Dockerfile
+      dockerfile: ./dockerfiles/debian.dockerfile
       # Argumentos para que docker-engine compile la imagen 
       args:
         tag-version: 11
@@ -41,12 +41,12 @@ services:
       - "8020:20"
     # Carpetas compartidas entre el host y el contenedor  
     volumes:
-      - ./http/www:/var/www
+      - ./volumes/www:/var/www
     # Red a la que se conecta el contenedor
     networks:
       back-tier:
         aliases:
-          - org.organization.nginx-host
+          - org.organization.debian-host
 
 # Volumenes creados         
 volumes:
