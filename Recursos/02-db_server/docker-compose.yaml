@@ -26,9 +26,9 @@ services:
     restart: "no"
     build:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
-      context: ./dockerfiles
+      context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: posgres.dockerfile
+      dockerfile: ./dockerfiles/posgres.dockerfile
       #args:
       #  ARGUMENT: "init postgres"
     environment:
@@ -40,7 +40,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./volumes/db:/var/lib/postgresql/data
     networks:
       back-tier:
         aliases:
@@ -51,19 +51,19 @@ services:
     restart: unless-stopped
     build:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
-      context: ./dockerfiles
+      context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: pgadmin.dockerfile
+      dockerfile: /dockerfiles/pgadmin.dockerfile
     environment:
       PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "giancarlo"
-      PGADMIN_SERVER_JSON_FILE: "servers.json"
+      PGADMIN_SERVER_JSON_FILE: ./config/servers.json
     ports:
       - "8000:80"
     depends_on:
       - postgres
     volumes: 
-      - ./admin:/var/lib/pgadmin
+      - ./volumes/admin:/var/lib/pgadmin
     networks:
       back-tier:
         aliases:
@@ -75,9 +75,9 @@ services:
     restart: "no"
     build:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
-      context: ./dockerfiles
+      context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: nginx.dockerfile
+      dockerfile: ./dockerfiles/nginx.dockerfile
       # Argumentos para que docker-engine compile la imagen 
       args:
         tag-version: 11
@@ -91,7 +91,7 @@ services:
       - "8080:80"
     # Carpetas compartidas entre el host y el contenedor  
     volumes:
-      - ./www:/usr/share/nginx/html
+      - ./volumes/www:/usr/share/nginx/html
     # Red a la que se conecta el contenedor
     networks:
       back-tier:
