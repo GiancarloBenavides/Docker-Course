@@ -2,11 +2,11 @@
 <p><code>Fundamentos de docker para sistemas operativos</code></p>
 <p>Creado por <code>Giancarlo Ortiz</code> para explicar los fundamentos de los <code>Sistemas operativos</code></p>
 
-## Proyecto de servidor web
+## Proyecto de servidor web con socket PHP
 El proyecto esta basado en la imagen de Debian 11 e incluye:
 
 * Un servidor web Nginx
-* Un servidor open ssh
+* Un socket PHP
 * Un volumen para la configuración de los sitios
 * Un volumen para los archivos públicos
 

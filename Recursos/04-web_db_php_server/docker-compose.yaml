@@ -1,0 +1,105 @@
+version: "3.9" # optional since v1.27.0
+
+# Declaración de las redes que se van a crear   
+networks:
+  # Red para los contenedores (back-tier es un label)
+  back-tier:
+    # Nombre de la red
+    name: org_net
+    # Tipo de red
+    driver: bridge
+    # Gestión IP 
+    ipam:
+      driver: default
+      # Configuración de red IPv4 y puerta de enlace 
+      config:
+        - subnet: 192.168.2.0/24
+          gateway: 192.168.2.254
+
+
+# Declaración de servicios que se van a crear
+services:
+  # Contenedor de persistencia en base de datos posgreSQL (postgres es un label)
+  postgres:
+    container_name: postgres_ctn
+    # restart: "no" | always | on-failure | unless-stopped
+    restart: "no"
+    build:
+      # Ruta de la carpeta con el dockerfile para construir la imgen 
+      context: .
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
+      dockerfile: ./dockerfiles/postgres.dockerfile
+      #args:
+      #  ARGUMENT: "init postgres"
+    environment:
+      POSTGRESQL_USERNAME: "gncdev"
+      POSTGRESQL_PASSWORD: "giancarlo"
+      POSTGRESQL_DATABASE: "tele"
+      POSTGRESQL_POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/db:/bitnami/postgresql
+    networks:
+      back-tier:
+        aliases:
+          - org.organization.db-host
+  # Contenedor administrador de base de datos pgAdmin4 (pgadmmin es un label)
+  pgadmmin:
+    container_name: pgadmin_ctn
+    restart: "no"
+    build:
+      # Ruta de la carpeta con el dockerfile para construir la imgen 
+      context: .
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
+      dockerfile: ./dockerfiles/pgadmin.dockerfile
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "giancarlo"
+      PGADMIN_SERVER_JSON_FILE: ./config/servers.json
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgres
+    volumes: 
+      - ./volumes/admin:/var/lib/pgadmin
+    networks:
+      back-tier:
+        aliases:
+          - org.organization.dbadmin-host
+  # Contenedor del servicio WEB (http es un label)
+  http:
+    container_name: nginx_ctn
+    # Opciones de restart: "no" | always | on-failure | unless-stopped
+    restart: "no"
+    build:
+      # Ruta de la carpeta con el dockerfile para construir la imgen 
+      context: .
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
+      dockerfile: ./dockerfiles/nginx.dockerfile
+      # Argumentos para que docker-engine compile la imagen 
+      args:
+        tag-version: 11
+    # Variables de entorno de ejecucion del contenedor
+    environment:
+      DOCKER_MASTER: "giancarlo"
+      NGINX_HOST: organization.org
+      NGINX_PORT: 80
+    # Puertos que serán expuestos en ejecución por el contenedor
+    ports:
+      - "8080:80"
+    # Carpetas compartidas entre el host y el contenedor  
+    volumes:
+      - ./volumes/www:/usr/share/nginx/html
+    # Red a la que se conecta el contenedor
+    networks:
+      back-tier:
+        aliases:
+          - org.organization.web-host
+
+# Volumenes creados en la carpeta del proyecto         
+volumes:
+  db: {}
+  admin: {}
+  www: {}
+
