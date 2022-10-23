@@ -37,10 +37,11 @@ services:
       DOCKER_MASTER: "giancarlo"
     # Puertos que serán expuestos en ejecución por el contenedor
     ports:
-      - "8000:80"
+      - "8080:80"
       - "8020:20"
     # Carpetas compartidas entre el host y el contenedor  
     volumes:
+      - ./volumes/sites:/etc/nginx/sites-available    
       - ./volumes/www:/var/www
     # Red a la que se conecta el contenedor
     networks:
@@ -50,4 +51,6 @@ services:
 
 # Volumenes creados         
 volumes:
+  sites: {}
   www: {}
+

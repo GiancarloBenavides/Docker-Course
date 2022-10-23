@@ -6,4 +6,4 @@ FROM nginx
 # Imagen Opcional 
 # FROM debian:11
 # Instalacion de php y conector posgre en el servidor web
-RUN apt-get update && apt-get install -y php7.2-fpm php-pgsql
+RUN apt-get update && apt-get install -y php-fpm php-pgsql

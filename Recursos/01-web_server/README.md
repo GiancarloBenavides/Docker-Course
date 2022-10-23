@@ -3,8 +3,12 @@
 <p>Creado por <code>Giancarlo Ortiz</code> para explicar los fundamentos de los <code>Sistemas operativos</code></p>
 
 ## Proyecto de servidor web
-El proyecto incluye un servidor web nginx basado en debian
-habilitado para ssh
+El proyecto esta basado en la imagen de debian 11 e incluye:
+
+* Un servidor web nginx 
+* Un servidor open ssh
+* Un volumen para la configuración de los sitios
+* Un volumen para los archivos públicos
 
 
 ---

@@ -1,0 +1,39 @@
+server {
+    # source:listen Ports
+    listen 0.0.0.0:80;
+
+    # domain - Alias
+    server_name  organization.org www.organization.org;
+
+    # logs server by domain
+    access_log    /var/log/nginx/organization.org/access.log;
+    error_log    /var/log/nginx/organization.org/error.log;
+
+    # entry point
+    root    /usr/share/nginx/html;
+    index	index.html index.htm index.php;
+
+
+    # checks the existence of files
+    location / {
+        try_files $uri $uri/ $uri/index.php?$query_string;
+    }
+
+    # pass the PHP scripts to CGI server
+    location ~ \.php$ {
+        root           /usr/share/nginx/html;
+        fastcgi_pass   php;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+
+    # deny access to .htaccess files
+    location ~ /\.ht {
+        deny  all;
+    }
+
+}
+
+
+

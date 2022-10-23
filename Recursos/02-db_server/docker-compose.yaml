@@ -28,7 +28,7 @@ services:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
       context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: ./dockerfiles/posgres.dockerfile
+      dockerfile: ./dockerfiles/postgres.dockerfile
       #args:
       #  ARGUMENT: "init postgres"
     environment:
@@ -36,11 +36,10 @@ services:
       POSTGRESQL_PASSWORD: "giancarlo"
       POSTGRESQL_DATABASE: "tele"
       POSTGRESQL_POSTGRES_PASSWORD: "postgres"
-      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     volumes:
-      - ./volumes/db:/var/lib/postgresql/data
+      - ./volumes/db:/bitnami/postgresql
     networks:
       back-tier:
         aliases:
@@ -48,12 +47,12 @@ services:
   # Contenedor administrador de base de datos pgAdmin4 (pgadmmin es un label)
   pgadmmin:
     container_name: pgadmin_ctn
-    restart: unless-stopped
+    restart: "no"
     build:
       # Ruta de la carpeta con el dockerfile para construir la imgen 
       context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen
-      dockerfile: /dockerfiles/pgadmin.dockerfile
+      dockerfile: ./dockerfiles/pgadmin.dockerfile
     environment:
       PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "giancarlo"

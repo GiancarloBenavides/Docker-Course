@@ -11,11 +11,13 @@ COPY ./volumes/www/organization.org /var/www/organization.org
 RUN chmod -R 755 /var/www & chown -R $USER:$USER /var/www
 # Copia de los archivos de configuracion del host virtual de nginx
 COPY ./config/organization.org.conf /etc/nginx/sites-available
-COPY ./config/default /etc/nginx/sites-available
+COPY ./config/default.conf /etc/nginx/sites-available
 COPY ./config/services_start.sh /
 # Establece los permisos para la ejecucion de los servicios
 RUN chmod -R 777 ./services_start.sh && chown -R $USER:$USER ./services_start.sh
 # Copia simbolica para habilitar los sitios
+RUN rm -f /etc/nginx/sites-enabled/*
+RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/
 RUN ln -s /etc/nginx/sites-available/organization.org.conf /etc/nginx/sites-enabled/
 # Inicio del servicio web
 ENTRYPOINT /services_start.sh
