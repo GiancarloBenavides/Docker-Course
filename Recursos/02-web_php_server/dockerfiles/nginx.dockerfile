@@ -1,4 +1,4 @@
-# NGINX
+# NGINX + PHP
 # Opciones de construcción de la imagen
 # -------------------------------------
 # Imagen base de la imagen que construye el dockerfile
