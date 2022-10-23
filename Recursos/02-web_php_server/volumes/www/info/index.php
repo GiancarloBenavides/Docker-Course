@@ -7,9 +7,10 @@
 </head>
 
 <body>
-    <h1>hola mundo</h1>
-    <h3>nginx + php en contenedor docker</h3>
-    <p>Trabajo de sistemas operativos 2</p>
+    <h1>Nginx + PHP</h1>
+    <h3>Contenedor docker</h3>
+    <p>La suma es <?php echo 1+1 ?> </p>
+    
 </body>
 
 </html>
