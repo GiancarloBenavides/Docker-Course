@@ -75,11 +75,3 @@ services:
       back-tier:
         aliases:
           - org.organization.dbadmin-host
-
-# # Volumenes creados en la carpeta del proyecto         
-# volumes:
-#   admin: {}
-
-      # - type: bind
-      #   source: /media/gncdev/WORK1/Repository/Code/Docker-Course/Recursos/03-db_server/volumes/db
-      #   target: /var/lib/postgresql/data
