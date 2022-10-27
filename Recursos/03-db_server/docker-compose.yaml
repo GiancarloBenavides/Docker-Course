@@ -21,7 +21,7 @@ networks:
 services:
   # Contenedor de persistencia en base de datos posgreSQL (postgres es un label).
   postgres:
-    #image: postgres:15.0
+    # image: postgres:15.0
     container_name: postgres_ctn
     # restart: "no" | always | on-failure | unless-stopped.
     restart: "no"
@@ -35,8 +35,8 @@ services:
         LOCAL_USER_ID_GID: "1000"
     #user: 1000:1000  
     environment:
-      POSTGRES_DB: "tele_db"
-      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "setup_db"
+      POSTGRES_USER: "gncdev"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/dta"
     ports:
@@ -53,6 +53,7 @@ services:
           - org.organization.db-host
   # Contenedor administrador de base de datos pgAdmin4 (pgadmmin es un label)
   pgadmmin:
+    # image: dpage/pgadmin4:6.15
     container_name: pgadmin_ctn
     # restart: "no" | always | on-failure | unless-stopped
     restart: "no"
@@ -64,12 +65,11 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "giancarlo"
-      PGADMIN_SERVER_JSON_FILE: ./config/servers.json
     ports:
       - "8000:80"
     depends_on:
       - postgres
-    volumes: 
+    volumes:
       - ./volumes/db-admin:/var/lib/pgadmin
     networks:
       back-tier:
