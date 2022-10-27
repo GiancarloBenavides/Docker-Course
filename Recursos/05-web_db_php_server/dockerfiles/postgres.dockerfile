@@ -1,7 +1,10 @@
-# Opciones para la construccion de la imagen de posgresql
+# PostgreSQL
+# Opciones de construcción de la imagen
+# -------------------------------------
+# Imagen base de la imagen que construye el dockerfile
 # Imagen principal 
-FROM bitnami/postgresql
-
+FROM postgres:15.0
 # Imagen Opcional 
-# FROM postgres:alpine3.14
-
+# FROM bitnami/postgresql:14
+# Expone los puertos a los que es dirigido los servicios TCP
+EXPOSE 5432
