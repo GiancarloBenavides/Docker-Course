@@ -1,0 +1,55 @@
+version: "3.9" # optional since v1.27.0
+
+# Declaración de las redes que se van a crear   
+networks:
+  # Red para los contenedores (back-tier es un label)
+  back-tier:
+    # Nombre de la red
+    name: org_net
+    # Tipo de red
+    driver: bridge
+    # Gestión IP 
+    ipam:
+      driver: default
+      # Configuración de red IPv4 y puerta de enlace 
+      config:
+        - subnet: 192.168.2.0/24
+          gateway: 192.168.2.254
+
+
+# Declaración de servicios que se van a crear
+services:
+  # Contenedor del servicio WEB (http es un label)
+  http:
+    container_name: nginx_ctn
+    # Opciones de restart: "no" | always | on-failure | unless-stopped
+    restart: "no"
+    build:
+      # Ruta de la carpeta con el dockerfile para construir la imgen 
+      context: .
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
+      dockerfile: ./dockerfiles/nginx.dockerfile
+      # Argumentos para que docker-engine compile la imagen 
+      args:
+        tag-version: 11
+    # Variables de entorno de ejecucion del contenedor
+    environment:
+      DOCKER_MASTER: "giancarlo"
+      NGINX_HOST: organization.org
+      NGINX_PORT: 80
+    # Puertos que serán expuestos en ejecución por el contenedor
+    ports:
+      - "8080:80"
+    # Carpetas compartidas entre el host y el contenedor  
+    volumes:
+      - ./volumes/www:/usr/share/nginx/html
+    # Red a la que se conecta el contenedor
+    networks:
+      back-tier:
+        aliases:
+          - org.organization.web-host
+
+# Volumenes creados en la carpeta del proyecto         
+volumes:
+  www: {}
+
