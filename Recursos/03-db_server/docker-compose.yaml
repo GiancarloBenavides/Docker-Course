@@ -32,8 +32,7 @@ services:
       dockerfile: ./dockerfiles/postgres.dockerfile
       args:
         # Para que funcione la vinculacion este es el uid/gid del host y sera el que use postgres en el contenedor.
-        LOCAL_USER_ID_GID: "1000"
-    #user: 1000:1000  
+        LOCAL_USER_ID_GID: "1000" 
     environment:
       POSTGRES_DB: "setup_db"
       POSTGRES_USER: "gncdev"
@@ -69,7 +68,10 @@ services:
       - "8000:80"
     depends_on:
       - postgres
+    # Volume type -> Bind (carpeta compartida)
     volumes:
+      # La primera vez db-data debe estar vacio; luego esta reemplazara a la que viene por defecto en el contenedor.
+      # Para establecer los permisos adecuados, lea las recomendaciones en ./volumes/Readme.md
       - ./volumes/db-admin:/var/lib/pgadmin
     networks:
       back-tier:
