@@ -39,6 +39,7 @@ services:
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/dta"
     ports:
+      # En docker no es necesario exponer el puerto de la base de datos si las conxiones estan al interior de la red local = org_net.
       - "5432:5432"
     # Persistir la base de datos mas alla del ciclo de vidad del comtenedor.
     # Volume type -> Bind (carpeta compartida)
@@ -54,17 +55,18 @@ services:
   pgadmmin:
     # image: dpage/pgadmin4:6.15
     container_name: pgadmin_ctn
-    # restart: "no" | always | on-failure | unless-stopped
+    # restart: "no" | always | on-failure | unless-stopped.
     restart: "no"
     build:
-      # Ruta de la carpeta con el dockerfile para construir la imgen 
+      # Ruta de la carpeta con el dockerfile para construir la imgen.
       context: .
-      # Nombre del archivo dockerfile con las opciones de construccion de la imagen
+      # Nombre del archivo dockerfile con las opciones de construccion de la imagen.
       dockerfile: ./dockerfiles/pgadmin.dockerfile
     environment:
       PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "giancarlo"
     ports:
+      # Las peticiones al puerto 8000 de localhost se reenvian al puerto 80 del contenedor.
       - "8000:80"
     depends_on:
       - postgres
