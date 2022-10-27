@@ -33,7 +33,6 @@ services:
       POSTGRES_DB: "setup_db"
       POSTGRES_USER: "gncdev"
       POSTGRES_PASSWORD: "postgres"
-      PGDATA: "/var/lib/postgresql/data/dta"
     # Persistir la base de datos con un volumen nombradomas alla del ciclo de vidad del comtenedor.
     volumes:
       # Para establecer ver las ventajas de un volumen nombrado lea las observciones en ./volumes/Readme.md
@@ -67,6 +66,7 @@ services:
       back-tier:
         aliases:
           - org.organization.dbadmin-host
+
 
 # Volumenes creados para el proyecto         
 volumes:

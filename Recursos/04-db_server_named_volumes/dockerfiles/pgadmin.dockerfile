@@ -10,6 +10,6 @@ COPY ./config/servers.json /pgadmin4/
 # Establece los permisos para que el servidor pueda crear los volumenes
 USER root
 RUN chown -R pgadmin:0 /pgadmin4/servers.json
-USER postgres
+USER pgadmin
 # Expone los puertos a los que es dirigido los servicios TCP
 EXPOSE 80
