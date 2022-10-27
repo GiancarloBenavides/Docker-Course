@@ -80,8 +80,4 @@ services:
 volumes:
   db-data: {}
   db-admin: {}
-
-
-      # - type: bind
-      #   source: /media/gncdev/WORK1/Repository/Code/Docker-Course/Recursos/03-db_server/volumes/db
-      #   target: /var/lib/postgresql/data
+  
