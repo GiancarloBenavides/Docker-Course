@@ -21,7 +21,6 @@ networks:
 services:
   # Contenedor de persistencia en base de datos posgreSQL (postgres es un label).
   postgres:
-    #image: postgres:15.0
     container_name: postgres_ctn
     # restart: "no" | always | on-failure | unless-stopped.
     restart: "no"
@@ -30,22 +29,14 @@ services:
       context: .
       # Nombre del archivo dockerfile con las opciones de construccion de la imagen.
       dockerfile: ./dockerfiles/postgres.dockerfile
-      args:
-        # Para que funcione la vinculacion este es el uid/gid del host y sera el que use postgres en el contenedor.
-        LOCAL_USER_ID_GID: "1000"
-    #user: 1000:1000  
     environment:
-      POSTGRES_DB: "tele_db"
-      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "setup_db"
+      POSTGRES_USER: "gncdev"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/dta"
-    ports:
-      - "5432:5432"
-    # Persistir la base de datos mas alla del ciclo de vidad del comtenedor.
-    # Volumen nombrado
+    # Persistir la base de datos con un volumen nombradomas alla del ciclo de vidad del comtenedor.
     volumes:
-      # La primera vez db-data debe estar vacio; luego esta reemplazara a la que viene por defecto en el contenedor.
-      # Para establecer los permisos adecuados, lea las recomendaciones en ./volumes/Readme.md
+      # Para establecer ver las ventajas de un volumen nombrado lea las observciones en ./volumes/Readme.md
       - db-data:/var/lib/postgresql/data
     networks:
       back-tier:
@@ -64,12 +55,13 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: "giancarlobenavides@gmail.com"
       PGADMIN_DEFAULT_PASSWORD: "giancarlo"
-      PGADMIN_SERVER_JSON_FILE: ./config/servers.json
     ports:
       - "8000:80"
     depends_on:
       - postgres
+    # Persistir la base de datos con un volumen nombradomas alla del ciclo de vidad del comtenedor.
     volumes: 
+      # Para establecer ver las ventajas de un volumen nombrado lea las observciones en ./volumes/Readme.md
       - db-admin:/var/lib/pgadmin
     networks:
       back-tier:
@@ -80,4 +72,3 @@ services:
 volumes:
   db-data: {}
   db-admin: {}
-  
