@@ -2,46 +2,44 @@
 <p><code>Fundamentos de docker para sistemas operativos</code></p>
 <p>Creado por <code>Giancarlo Ortiz</code> para explicar los fundamentos de los <code>Sistemas operativos</code></p>
 
-## Vinculación de carpetas
-Cuando se desea compartir carpetas entre la maquina anfitrión y los contenedores (Host - container) existen tres posibilidades o casos de uso, según sea el sistema de archivos usado en cada uno de los sistemas:
+## Volúmenes nombrados
+Las carpetas compartidas son una gran solución cuando se desea acceder fácilmente a los datos del contenedor desde el host, pero son substancialmente de menor rendimiento; por ello es deseable los volúmenes nombrados sobre las carpetas compartidas para persistir los datos del contenedor mas allá del ciclo de vida del mismo.
 
-1. __EL anfitrión es tipo Unix:__
-y las dos unidades de almacenamiento se encuentran formateadas en un sistema que soporta permisos unix en cuyo caso es muy fácil establecer la propiedad y los permisos que requiera el contenedor para la carpeta compartida.
-
-```sh
-# En el anfitrión y en el contenedor
-chown -R $USER:$USER /Path/to/data
-chmod -R 750 /Path/to/data
-```
-
-2. __EL anfitrión no es tipo Unix (Windows):__
-y la unidad de almacenamiento del anfitrión conde se creara el recurso compartido se encuentra formateada en un sistema como __NTFS__, que no soportan los permisos de UNIX; en este caso [__WSL__][1] donde funciona el anfitrión emulara y permitirá gestionar los permisos requeridos por el contenedor para la carpeta compartida.
+Aunque Docker-compose permite declarar un volumen nuevo en el manifiesto, también es posible crear el volumen previamente
 
 ```sh
-# En el contenedor (dockerfile)
-chown -R $USER:$USER /Path/to/data
-chmod -R 750 /Path/to/data
+# Para crear un volumen en el anfitrión antes de lanzar un contenedor con Docker run o Docker compose
+# docker volume create <nombre-del-volumen>
+docker volume create db-data
+docker volume create db-admin
 ```
 
-3. __EL anfitrión es tipo Unix:__
-y la unidad de almacenamiento del anfitrión conde se creara el recurso compartido es externa (_disco USB_) se encuentra formateada en un sistema como __NTFS__, que no soportan los permisos de UNIX; en este caso esta unidad se debe montar con las opciones personalizadas para [__umask__][2] requeridas por el contenedor porque luego de montar la unidad no sera posible modificar los permisos rwx. Para esto en el archivo [/etc/fstab][3] del anfitrión agregar una línea como:
+>Nota: adicionalmente los volúmenes no necesitan permisos especiales en el anfitrión y se pueden gestionar por completo desde el contenedor
 
+Si se desea acceder a los datos del volumen desde el anfitrión se tienen dos opciones:
+
+* Montar el volumen en un contenedor básico.
+* Acceder a los datos del volumen en el espacio de docker.
 
 ```sh
-# --------------------------->
-# USB was on /dev/sddx opciones personalizadas de umask
-UUID=8EA0A84DA0A83D99 /media/gncdev/WORK ntfs-3g defaults,umask=027,uid=1000,gid=1000    0    0
-```
+# Para listar los volúmenes creados
+docker volume ls
 
-```sh
-# En el contenedor (dockerfile)
-chown -R $USER:$USER /Path/to/data
-chmod -R 750 /Path/to/data
-```
+# Para inspeccionar los puntos de montaje de un volumen
+docker volume inspect db-data
+docker volume inspect db-admin
 
-[1]:https://es.wikipedia.org/wiki/Subsistema_de_Windows_para_Linux
-[2]:https://es.wikipedia.org/wiki/Umask
-[3]:https://es.wikipedia.org/wiki/Fstab
+# Para montar los volúmenes creados en ubuntu
+docker run -v db-data:/temp/db-admin -v db-admin:/tmp/db-data ubuntu
+
+# Para acceder a los datos del volumen en GNU/Linux
+cd /var/lib/docker/volumes/db-data/_data
+cd /var/lib/docker/volumes/db-admin/_data
+
+# Para acceder a los datos del volumen en MS/Windows
+cd "\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\db-data\_data"
+cd "\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes\db-admin\_data"
+```
 
 ---
 ## Mas Recursos

@@ -42,11 +42,11 @@ services:
     ports:
       - "5432:5432"
     # Persistir la base de datos mas alla del ciclo de vidad del comtenedor.
-    # Volume type -> Bind (carpeta compartida)
+    # Volumen nombrado
     volumes:
       # La primera vez db-data debe estar vacio; luego esta reemplazara a la que viene por defecto en el contenedor.
       # Para establecer los permisos adecuados, lea las recomendaciones en ./volumes/Readme.md
-      - ./volumes/db-data:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     networks:
       back-tier:
         aliases:
@@ -70,15 +70,17 @@ services:
     depends_on:
       - postgres
     volumes: 
-      - ./volumes/db-admin:/var/lib/pgadmin
+      - db-admin:/var/lib/pgadmin
     networks:
       back-tier:
         aliases:
           - org.organization.dbadmin-host
 
-# # Volumenes creados en la carpeta del proyecto         
-# volumes:
-#   admin: {}
+# Volumenes creados para el proyecto         
+volumes:
+  db-data: {}
+  db-admin: {}
+
 
       # - type: bind
       #   source: /media/gncdev/WORK1/Repository/Code/Docker-Course/Recursos/03-db_server/volumes/db

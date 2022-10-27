@@ -1,13 +1,14 @@
 {
     "Servers": {
         "1": {
-            "Name": "organization.min",
             "Group": "Servers",
-            "Host": "org.organization.db-host",
+            "Name": "organization",
             "Port": 5432,
-            "MaintenanceDB": "tele",
+            "SSLMode": "prefer",
             "Username": "gncdev",
-            "Comment": "Este servidor de diseño se incluyo en un archivo JSON"
+            "Host": "postgres",
+            "MaintenanceDB": "setup_db",
+            "Comment": "Este servidor se incluyo en un archivo JSON al iniciar pgAdmin"
         }
     }
 }

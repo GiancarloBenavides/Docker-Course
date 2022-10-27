@@ -8,6 +8,6 @@ FROM dpage/pgadmin4:6.15
 # Copia de los archivos de configuracion de los servidores al administrador
 COPY ./config/servers.json /pgadmin4/
 # Establece los permisos para que el servidor pueda crear los volumenes 
-# RUN chown -R 5050:5050 /var/lib/pgadmin
+RUN chown -R $USER:$USER /pgadmin4/servers.json
 # Expone los puertos a los que es dirigido los servicios TCP
 EXPOSE 80

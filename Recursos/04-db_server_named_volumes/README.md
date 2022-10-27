@@ -2,13 +2,13 @@
 <p><code>Fundamentos de docker para sistemas operativos</code></p>
 <p>Creado por <code>Giancarlo Ortiz</code> para explicar los fundamentos de los <code>Sistemas operativos</code></p>
 
-## Proyecto de servidor Postgres
-El proyecto esta basado en las imágenes de Bitnami e incluye:
+## Proyecto de servidor Postgres con volúmenes nombrados
+El proyecto esta basado en las imágenes oficiales de Postgres y pgAdmin e incluye:
 
 * Un servidor PostgreSQL
 * Un servidor PgAdmin para administrar la DB
-* Un volumen para persistir la base de datos
-* Un volumen para persistir la configuración de PgAdmin
+* Un volumen nombrado para persistir la base de datos
+* Un volumen nombrado para persistir la configuración de PgAdmin
 
 ---
 ## Mas Recursos
