@@ -9,6 +9,7 @@ El proyecto esta basado en las imágenes oficiales de Nginx, Postgres y pgAdmin 
 * Un socket PHP
 * Un servidor PostgreSQL
 * Un servidor PgAdmin para administrar la DB
+* Una carpeta compartida para 
 * Un volumen nombrado para persistir la base de datos
 * Un volumen nombrado para persistir la configuración de PgAdmin
 
