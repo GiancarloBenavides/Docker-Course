@@ -1,0 +1,151 @@
+body {
+    min-width: 480px;
+}
+
+header img {
+    vertical-align: text-bottom;
+    filter: grayscale(50%);
+}
+
+header img:hover {
+    filter: grayscale(0%);
+    filter: contrast(128%);
+}
+
+
+header span.plus {
+    font-size: 30px;
+}
+
+header h3 {
+    color: #555;
+}
+
+ul,
+li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list {
+    padding: 20px 40px;
+    margin: 20px;
+    padding-bottom: 38px;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 25px 25px 0;
+    box-sizing: content-box;
+}
+
+.task-control {
+    margin: 0;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.5);
+    padding-bottom: 10px;
+}
+
+.task-control button {
+    height: 25px;
+    padding: 4px 18px;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 0.7em;
+    border: none;
+    font-weight: bold;
+}
+
+.task-control button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.task-list h3 {
+    padding: 0 10px;
+    text-transform: uppercase;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+}
+
+.task-list h3:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.task-list h3 b {
+    width: 80px;
+    font-size: 0.5em;
+    display: inline-block;
+}
+
+.task-list h3 input {
+    background: none;
+    border: none;
+    color: rgb(70, 70, 70);
+    width: calc(100% - 20px);
+}
+
+.task-item {
+    margin: 10px 0 0;
+    height: 40px;
+    overflow: hidden;
+}
+
+.task-item input {
+    float: left;
+}
+
+.task-item button {
+    height: 40px;
+    width: 40px;
+    font-size: 1.5em;
+    vertical-align: bottom;
+    float: left;
+}
+
+.new:hover {
+    color: greenyellow;
+}
+
+.copy:hover {
+    color: orange;
+}
+
+.delete:hover {
+    color: red;
+}
+
+input,
+button {
+    margin: 0;
+    height: 38px;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+button {
+    height: 40px;
+}
+
+input:hover,
+button:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+li>input[type="checkbox"] {
+    margin: 0;
+    height: 40px;
+    width: 40px;
+    vertical-align: bottom;
+    outline: none;
+    appearance: none;
+}
+
+li>input[type="text"] {
+    padding-left: 10px;
+    width: calc(100% - 136px);
+}
+
+li>input[type="checkbox"]:checked {
+    opacity: 1;
+    appearance: auto;
+}

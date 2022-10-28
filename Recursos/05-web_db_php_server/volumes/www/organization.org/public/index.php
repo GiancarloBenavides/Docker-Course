@@ -8,17 +8,47 @@
  * @copyright 2020 GNC
  */
 
-$author = "@gncdev";
-$version = "1.0";
-$webpage = "https://twitter.com/gncdev"
 
-echo "<h1>hola mundo</h1>";
-echo "<p>La suma es: </p>";
-echo 1+1;
-echo "<p><b>Autor:</b><a href="$webpage"> $author.</a></p>";
+$author = "@gncdev";
+$version = "0.1.0.alpha";
+$webpage = "https://twitter.com/gncdev";
+
+$contador = file_get_contents('contador.txt');
+file_put_contents('contador.txt', $contador+1);
+
+$salt = rand(0,80);
+$red = round(255 - $salt);
+$green = round(128 + $salt);
+$blue = round(80 - $salt);
+
+$bk_color="rgb(" . $red  . "," . $green . "," . $blue .")";
+
+$height = 33;
 
 ?>
 
-<p><b>Version:</b> <?php $version ?></p>
-<p><b>Date:</b> <?php echo date("d.m.Y");?></p>
-<p><b>Time:</b> <?php echo date("H:i:s");?></p>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {background-color: <?php echo $bk_color; ?>; text-align: center;}
+    </style>
+</head>
+
+<body>
+<?php require_once("../sources/templates/header.php");?>
+
+<?php 
+$items = 5;
+require("../sources/templates/list.php");
+?>
+
+<?php require_once("../sources/templates/footer.php");?>
+
+</body>
+
+</html>
