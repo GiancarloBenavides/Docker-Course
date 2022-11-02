@@ -1,0 +1,39 @@
+{
+    "list": [
+        {
+            "id": 1,
+            "description": "Urgentes"
+        },
+        {
+            "id": 2,
+            "description": "Hogar"
+        }
+    ],
+    "task": [
+        {
+            "id": 4,
+            "list_id": 2,
+            "description": "Tarea Uno"
+        },
+        {
+            "id": 5,
+            "list_id": 2,
+            "description": "Tarea Dos"
+        },
+        {
+            "id": 1,
+            "list_id": 1,
+            "description": "Tarea Uno Urgente"
+        },
+        {
+            "id": 2,
+            "list_id": 1,
+            "description": "Tarea Dos Urgente"
+        },
+        {
+            "id": 3,
+            "list_id": 1,
+            "description": "Tarea Tres Urgente"
+        }
+    ]
+}

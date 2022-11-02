@@ -1,0 +1,125 @@
+<?php
+
+require_once("./conf.d/conn.php");
+//require_once("class/class.connection.php");
+//db = new Connection();
+
+// if(!($dbconn = pg_connect($connection_string))){
+//     echo ok;
+// }else{
+//     echo fail;
+// }
+
+
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+
+set_error_handler("exception_error_handler");
+
+try {
+    $conn=@pg_connect($connection_string);
+} Catch (Exception $e) {
+    Echo $e->getMessage();
+}
+
+if(!$conn) {
+    echo "Error : Unable to open database\n";
+    echo "<br>";
+} else {
+    echo "Opened database successfully.\n";
+    echo "<br>";
+}
+
+$query = "SELECT description FROM list";
+$result = pg_query($conn, $query);
+
+// function resource_to_json($resource) {
+//     $fields = array();
+//     $registers = array();
+//     $row_num = pg_numrows($result);
+//     $col_num = pg_numfields($result);
+//     for ($i=0; $i<$col_num; $i++) {
+//         array_push($fields, pg_field_name($resource, $i));
+//     }
+//     for ($i=0; $i<$row_num; $i++) {
+//         $row = pg_fetch_row($resource, $i, PGSQL_ASSOC);
+//     }
+
+//     echo $row;
+
+
+//     // while () {
+//     //     $my_array[] = $row;
+//     // }
+//     // echo json_encode($my_array);
+// }
+
+// function resource_to_json($resource) {
+//     $fields = array();
+//     $registers = array();
+//     $row_num = pg_numrows($result);
+//     $col_num = pg_numfields($result);
+//     for ($i=0; $i<$col_num; $i++) {
+//         array_push($fields, pg_field_name($resource, $i));
+//     }
+//     for ($i=0; $i<$row_num; $i++) {
+//         $row = pg_fetch_row($resource, $i, PGSQL_ASSOC);
+//     }
+
+//     echo $row;
+
+
+//     // while () {
+//     //     $my_array[] = $row;
+//     // }
+//     // echo json_encode($my_array);
+// }
+
+function getList() {
+    $list = pg_fetch_row(pg_query($conn, 'SELECT json_agg(list.*) as "list" FROM list'))[0];   
+    return eval($list);
+}
+
+function getListWithTask() {
+    $list = getList();
+    $json = $list;
+    return $json;
+}
+
+// SELECT json_agg(to_jsonb(task) - 'list_id') as "task"
+//   FROM task WHERE list_id = 2
+
+if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)))
+{
+    if (!$result) {
+        echo "Ocurrió un error.\n";
+        exit;
+    } else {
+        echo "query ok.\n";
+        echo "<br>";
+        $resultArray = pg_fetch_all($result, PGSQL_ASSOC);
+        $list = pg_fetch_row(pg_query($conn, 'SELECT json_agg(list.*) as "list" FROM list'))[0];
+        $task = pg_fetch_row(pg_query($conn, 'SELECT json_agg(task.*) as "task" FROM task'))[0];
+        $all = pg_fetch_row(pg_query($conn, 'SELECT json_agg(task.*) as "task" FROM task'))[0];
+        echo json_encode($resultArray);
+        echo "<br>";
+        echo $list;
+        echo "<br>";
+        echo $task;
+        echo "<br>";
+        echo "<br>";
+        echo '{"list":' . $list . ',';
+        echo "<br>";
+        echo '"task":' . $task . '}';
+        echo "<br>";
+        echo "</br>";
+        echo "START";
+        echo "<br>";
+        echo "</br>";
+        $json = getList();
+        echo $json;
+        echo "FIN";
+    }
+}
+?>

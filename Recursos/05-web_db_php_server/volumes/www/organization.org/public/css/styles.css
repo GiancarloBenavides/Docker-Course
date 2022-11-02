@@ -132,6 +132,7 @@ button:hover {
 }
 
 li>input[type="checkbox"] {
+    background: radial-gradient(circle, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.1) 14%, rgba(0, 0, 0, 0.5) 15%, rgba(0, 0, 0, 0.4) 24%, rgba(0, 0, 0, 0.4) 100%);
     margin: 0;
     height: 40px;
     width: 40px;
@@ -139,6 +140,11 @@ li>input[type="checkbox"] {
     outline: none;
     appearance: none;
 }
+
+li>input[type="checkbox"]:hover {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 14%, rgba(0, 0, 0, 0.4) 24%, rgba(0, 0, 0, 0.4) 100%);
+}
+
 
 li>input[type="text"] {
     padding-left: 10px;

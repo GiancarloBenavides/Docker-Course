@@ -2,7 +2,7 @@
 
 /** 
  * PHP Version 7.4
- * @package /
+ * @package Config
  * @author Giancarlo
  * @version 1.0
  * @copyright 2020 GNC
