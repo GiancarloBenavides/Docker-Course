@@ -18,9 +18,8 @@
  * @global string DB database name
  */
 
-define("NOT_DB_ERROR","No hay error");
+
 define("DB_ERROR","La conexión con el servidor ha fallado");
-define("NOT_QUERY_ERROR","No hay error");
 define("QUERY_ERROR","Error al realizar una consulta");
 
 ?>

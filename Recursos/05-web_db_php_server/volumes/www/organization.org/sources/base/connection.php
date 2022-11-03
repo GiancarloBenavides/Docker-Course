@@ -53,10 +53,8 @@ class DataBaseConnection
         if (!($this->resource = pg_connect($this->connection_string))) {
             $this->error = DB_ERROR . pg_last_error();
             $this->state = "Close";
-            return false;
         } else {
             $this->state = "Open";
-            return true;
         }
     }
 
@@ -112,12 +110,12 @@ class DataBaseConnection
 // Debug
 if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)) and DEBUG) {
     $DBC = new DataBaseConnection();
-    echo "<br>\n[CONNECTION STATUS]: " . $DBC->get_state() . " " . $DBC->driver . " " . $DBC->type;
+    echo "<br>\n". '[CONNECTION STATUS]: ' . $DBC->get_state() . " " . $DBC->driver . " " . $DBC->type;
     if ($DBC->error) {
-        echo "<br>\n[ERROR]: " . $DBC->error;
+        echo "<br>\n" . '[ERROR]: ' . $DBC->error;
     } else {
-        echo "<br>\n[RESOURCE TYPE]: " . get_resource_type($DBC->resource);
-        echo "<br>\n[RESOURCE DUMP]:";
+        echo "<br>\n" . '[RESOURCE TYPE]: ' . get_resource_type($DBC->resource);
+        echo "<br>\n" . '[RESOURCE DUMP]: ';
         echo "<br>\n" . var_dump($DBC->resource);
     }
 }

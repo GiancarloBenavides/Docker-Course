@@ -24,8 +24,10 @@ require_once("../conf.d/messages.php");
 class DataBaseQuery
 {
 	public $clean_query;
+	public $raw_query;
 	public $name_prepared;
-	public $resource;
+	public $db_resource;
+	public $result;
 	public $params;
 	public $type;
 	public $error;
@@ -37,38 +39,36 @@ class DataBaseQuery
 	 */
 	public function __construct($db, string $raw_query, string $query_type = "custom", string $query_name = "my_query", array $query_params = [])
 	{
-		$this->error = NOT_QUERY_ERROR;
+		$this->error = false;
 		$this->type = $query_type;
 		$this->name = $query_name;
 		$this->params = $query_params;
+		$this->db_resource = $db;
+		$this->raw_query = $raw_query;
 		$this->state = "Created";
-		$this->clean_query = $this->prepare($db, $raw_query, $query_name);
-		$this->resource = $this->execute($db, $this->clean_query);
+		$this->clean_query = $this->prepare($raw_query);
+		$this->execute();
 	}
 
 	/**
 	 * get query error
 	 * @return boolean
 	 */
-	function execute($db, string $query)
+	function execute()
 	{
 		if ($this->type == "defined") {
-			if (!($this->resource = pg_execute($db, $this->name_prepared, $this->params))) {
+			if (!($this->result = pg_execute($this->db_resource, $this->name_prepared, $this->params))) {
 				$this->error = QUERY_ERROR . pg_last_error();
 				$this->state = "Lack";
-				return false;
 			} else {
 				$this->state = "Acquired";
-				return true;
 			}
 		} else {
-			if (!($this->resource = pg_query($db, $query))) {
+			if (!($this->result = pg_query($this->db_resource, "{$this->clean_query}"))) {
 				$this->error = QUERY_ERROR . pg_last_error();
 				$this->state = "Lack";
-				return false;
 			} else {
 				$this->state = "Acquired";
-				return true;
 			}
 		}
 	}
@@ -77,12 +77,12 @@ class DataBaseQuery
 	 * get query error
 	 * @return string
 	 */
-	function prepare($db, string $raw_query)
+	function prepare(string $raw_query)
 	{
 		if ($this->type == "prepared") {
-			$query = pg_prepare($db, $this->query_name, $raw_query);
+			$query = pg_prepare($this->db_resource, $this->query_name, $raw_query);
 		} else {
-			$query = pg_escape_literal($raw_query);
+			$query = pg_escape_string($raw_query);
 		}
 		$this->state = "Prepared";
 		return $query;
@@ -113,30 +113,33 @@ class DataBaseQuery
 	 * @param  integer $t type of return
 	 * @return array
 	 */
-	function getArray($result, $t = 1)
+	function define($name, $query)
 	{
-		if ($t == 0)
-			return @pg_fetch_array($result);
-		elseif ($t == 2)
-			return @pg_fetch_all($result);
-		else {
-			$ar = array();
-			if ($arr = pg_fetch_array($result)) {
-				$i = 0;
-				while (($f = current($arr)) !== FALSE) {
-					if ($t == 1) {
-						if ($i % 2 != 0)
-							$ar[key($arr)] = $arr[key($arr)];
-					} else {
-						if ($i % 2 == 0)
-							$ar[key($arr)] = $arr[key($arr)];
-					}
+		pg_prepare($this->db_resource, $name, $query);
 
-					next($arr);
-					$i++;
-				}
+
+
+		$array = array();
+		while ($row = pg_fetch_array($this->result)) {
+
+			$array[key($row)] = $row[key($row)];
+		}
+	}
+
+
+	/**
+	 * get array from SQL result
+	 * @param  postgres_result $result result from postgres::query
+	 * @param  integer $t type of return
+	 * @return array
+	 */
+	function get_data()
+	{
+		if ($this->result) {
+			$array = array();
+			while ($row = pg_fetch_array($this->result)) {
+				$array[key($row)] = $row[key($row)];
 			}
-			return 	$ar;
 		}
 	}
 
@@ -213,14 +216,16 @@ class DataBaseQuery
 if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)) and DEBUG) {
 	require_once("./connection.php");
 	$dbc = new DataBaseConnection();
-	$query = new DataBaseQuery($dbc, "SELECT COUNT(*) FROM [database_tables]");
-	echo '[CONNECTION STATUS]: ' . $dbc->get_state() . " " . $dbc->driver . " " . $dbc->type;
-	echo "<br>\n";
-	echo '[QUERY STATUS]: ' . $query->get_state();
-
-	// echo '[ERROR]: ' . $query->error;
-	// echo "<br>\n";
-	// echo '[RESOURCE TYPE]: ' . get_resource_type($query->resource);
-	// echo "<br>\n";
-	// echo var_dump($query->resource);
+	$query_raw = "SELECT now();";
+	$qc = new DataBaseQuery($dbc->resource, $query_raw);
+	echo "<br>\n" . '[CONNECTION STATUS]: ' . $dbc->get_state() . " " . $dbc->driver . " " . $dbc->type;
+	if ($dbc->get_state() == "Open") {
+		echo "<br>\n" . '[QUERY STATUS]: ' . $qc->get_state();
+		if ($qc->error) {
+			echo "<br>\n" . '[ERROR]: ' . $query->error;
+		} else {
+			echo "<br>\n" . '[RESOURCE TYPE]: ' . get_resource_type($qc->result);
+			echo "<br>\n" . '[RESULT]: ' . pg_fetch_row($qc->result)[0];
+		}
+	}
 }
