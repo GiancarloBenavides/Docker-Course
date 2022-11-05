@@ -1,9 +1,9 @@
 <?php
 
-require_once("./connection.php");
-require_once("../conf.d/messages.php");
-$scheme_sql = file_get_contents("../conf.d/make_db.sql");
-$data_sql = file_get_contents("../conf.d/dummy.sql");
+require_once("./connect.php");
+require_once("../config/messages.php");
+$scheme_sql = file_get_contents("../scripts/start_scheme.sql");
+$data_sql = file_get_contents("../scripts/start_dummy.sql");
 
 
 $dbc = new DataBaseConnection();
@@ -27,5 +27,3 @@ if (!$result) {
 
 
 echo "<br>----- END -----";
-
-?>

@@ -9,8 +9,7 @@
  * @copyright 2020 GNC
  */
 
-require_once("../conf.d/conn.php");
-require_once("../conf.d/messages.php");
+require_once("../config/messages.php");
 
 
 /**
@@ -36,11 +35,12 @@ class DataBaseConnection
      */
     public function __construct()
     {
-        $this->driver = DRIVER;
+        $databases = include("../config/databases.php");
         $this->error = False;
-        $this->type = $this->prepare();
-        $this->connection_string = $this->build();
-        $this->state = "Created";
+        $this->driver = $databases->driver;
+        $this->type = $databases->debug;
+        $this->prepare();
+        $this->connection_string = $this->build($databases);
         $this->open();
     }
 
@@ -62,12 +62,17 @@ class DataBaseConnection
      * Build the connection string
      * @return string
      */
-    function build()
+    function build(object $databases)
     {
-        if (DRIVER) {
-            $driver_string = $this->driver . "_string";
-            $connection_string = $GLOBALS[$driver_string];
+        if ($this->driver) {
+            $host = "host=" . $databases->host;
+            $port = "port=" . $databases->port;
+            $user = "user=" . $databases->user;
+            $pass = "password=" . $databases->pass;
+            $name = "dbname=" . $databases->name;
+            $connection_string = implode(" ", array($host, $port, $user, $pass, $name));
         }
+        $this->state = "Created";
         return $connection_string;
     }
 
@@ -77,12 +82,9 @@ class DataBaseConnection
      */
     function prepare()
     {
-        if (DEBUG) {
+        if ($this->type) {
             error_reporting(E_ALL);
             ini_set("display_errors", 1);
-            return "Debug";
-        } else {
-            return "Production";
         }
     }
 
@@ -102,20 +104,5 @@ class DataBaseConnection
     function get_error()
     {
         return  $this->error;
-    }
-}
-
-
-
-// Debug
-if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)) and DEBUG) {
-    $DBC = new DataBaseConnection();
-    echo "<br>\n". '[CONNECTION STATUS]: ' . $DBC->get_state() . " " . $DBC->driver . " " . $DBC->type;
-    if ($DBC->error) {
-        echo "<br>\n" . '[ERROR]: ' . $DBC->error;
-    } else {
-        echo "<br>\n" . '[RESOURCE TYPE]: ' . get_resource_type($DBC->resource);
-        echo "<br>\n" . '[RESOURCE DUMP]: ';
-        echo "<br>\n" . var_dump($DBC->resource);
     }
 }

@@ -13,7 +13,8 @@ DROP TABLE
 -------------------------------
 CREATE TABLE
     IF NOT EXISTS public.dbt_categories (
-        description VARCHAR(255) NOT NULL,
+        
+         VARCHAR(255) NOT NULL,
         created_at timestamp NOT NULL DEFAULT NOW(),
         updated_at timestamp NOT NULL DEFAULT NOW(),
         id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
