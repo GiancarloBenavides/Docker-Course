@@ -9,17 +9,13 @@
  * @copyright 2020 GNC
  */
 
+// Mensajes en Español
+$es = array (
+    "db_error" => "La conexión con el servidor ha fallado",
+    "query_error" => "Error al realizar una consulta",
+);
 
-/**
- * Configuration
- * @global string HOST database host
- * @global string USER database user
- * @global string PASS database password
- * @global string DB database name
- */
-
-
-define("DB_ERROR","La conexión con el servidor ha fallado");
-define("QUERY_ERROR","Error al realizar una consulta");
+// Return connection type [production | development]
+return (object) $es;
 
 ?>

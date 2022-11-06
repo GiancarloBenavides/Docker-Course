@@ -9,7 +9,7 @@
  * @copyright 2020 GNC
  */
 
-require_once("../config/messages.php");
+$msj = include("../config/messages.php");
 
 
 /**
@@ -50,8 +50,9 @@ class DataBaseConnection
      */
     function open()
     {
+        global $msj;
         if (!($this->resource = pg_connect($this->connection_string))) {
-            $this->error = DB_ERROR . pg_last_error();
+            $this->error = $msj->db_error . pg_last_error();
             $this->state = "Close";
         } else {
             $this->state = "Open";

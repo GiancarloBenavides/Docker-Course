@@ -46,7 +46,7 @@ class ConfigurationScope
     {
         $search_pattern = $this->folder . "/*" . $this->file_extension;
         $paths = glob($search_pattern);
-        if ($index = array_search($this->folder . "/databases.php", $paths)){
+        if ($index = array_search($this->folder . "/databases.php", $paths)) {
             unset($paths[$index]);
         }
         foreach ($paths as $path) {
