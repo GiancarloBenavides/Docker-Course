@@ -1,6 +1,6 @@
 <?php
 
-namespace task\domain\connect;
+namespace task\infrastructure\connect;
 
 /** 
  * TODO-GNX
@@ -11,7 +11,7 @@ namespace task\domain\connect;
  * @copyright 2020 GNC
  */
 
-$msj = include(realpath(dirname(__FILE__) . "/../config") . "/messages.php");
+$msj = include(realpath(dirname(__FILE__) . "/config") . "/messages.php");
 
 
 /**
@@ -37,7 +37,7 @@ class DataBaseConnection
      */
     public function __construct()
     {
-        $databases = include(realpath(dirname(__FILE__) . "/../config") . "/databases.php");
+        $databases = include(realpath(dirname(__FILE__) . "/config") . "/databases.php");
         $this->error = False;
         $this->driver = $databases->driver;
         $this->type = ($databases->debug == true) ? "Debug" : "Not Debug";

@@ -1,5 +1,7 @@
 <?php
 
+namespace task\infrastructure\query;
+
 /** 
  * TODO-GNX
  * PHP Version 7.4

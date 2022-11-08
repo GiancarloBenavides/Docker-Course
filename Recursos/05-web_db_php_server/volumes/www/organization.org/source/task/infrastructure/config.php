@@ -1,6 +1,6 @@
 <?php
 
-namespace task\domain\config;
+namespace task\infrastructure\config;
 
 /** 
  * TODO-GNX
@@ -31,7 +31,7 @@ class ConfigurationScope
     /**
      * DataBaseConnection class constructor.
      */
-    public function __construct(string $folder = "../config")
+    public function __construct(string $folder = "./config")
     {
         $this->folder = $folder;
         $this->file_extension = "php";

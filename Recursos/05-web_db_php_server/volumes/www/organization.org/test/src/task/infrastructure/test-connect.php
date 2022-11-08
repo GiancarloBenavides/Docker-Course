@@ -1,6 +1,6 @@
 <?php
 
-require_once("../../../../source/task/domain/connect.php");
+require_once("../../../../source/task/infrastructure/connect.php");
 
 // echo "<br>";
 // echo $_SERVER['SCRIPT_FILENAME'];
@@ -15,7 +15,7 @@ require_once("../../../../source/task/domain/connect.php");
 
 // print_r($msj->db_error);
 
-use task\domain\connect;
+use task\infrastructure\connect;
 
 $DBC = new connect\DataBaseConnection();
 
