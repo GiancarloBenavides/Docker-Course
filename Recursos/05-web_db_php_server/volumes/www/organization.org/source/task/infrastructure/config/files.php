@@ -9,17 +9,16 @@
  * @copyright 2020 GNC
  */
 
+$config_context = dirname(__FILE__);
+$bounded_context = realpath($config_context . "/../../");
+$sql_context = realpath($config_context . "/../scripts");
 
-// Server database
-$paths = array(
-    'host' => 'postgres',
-    'user' => 'gncdev',
-    'pass' => 'postgres',
-    'name' => 'todo_db',
-    'driver' => 'pgsql',
-    'port' => '5432',
-    'debug' => false
+// location of execution contexts
+$files = array(
+    'config' => $config_context,
+    'bounded' => $bounded_context,
+    'scripts' => $sql_context
 );
 
-// Return fil type [production | development]
-return (object) $paths;
+// Return location of files
+return (object) $files;

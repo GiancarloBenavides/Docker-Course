@@ -10,7 +10,7 @@
  */
 
 
-// Server database
+// database server information
 $production = array(
     'host' => 'postgres',
     'user' => 'gncdev',
@@ -21,6 +21,7 @@ $production = array(
     'debug' => false
 );
 
+// Development database server information
 $development = array(
     'host' => 'postgres',
     'user' => 'gncdev',
