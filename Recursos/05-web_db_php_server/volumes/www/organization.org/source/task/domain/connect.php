@@ -1,5 +1,7 @@
 <?php
 
+namespace task\domain\connect;
+
 /** 
  * TODO-GNX
  * PHP Version 7.4
@@ -9,7 +11,7 @@
  * @copyright 2020 GNC
  */
 
-$msj = include("../config/messages.php");
+$msj = include(realpath(dirname(__FILE__) . "/../config") . "/messages.php");
 
 
 /**
@@ -35,10 +37,10 @@ class DataBaseConnection
      */
     public function __construct()
     {
-        $databases = include("../config/databases.php");
+        $databases = include(realpath(dirname(__FILE__) . "/../config") . "/databases.php");
         $this->error = False;
         $this->driver = $databases->driver;
-        $this->type = $databases->debug;
+        $this->type = ($databases->debug == true) ? "Debug" : "Not Debug";
         $this->prepare();
         $this->connection_string = $this->build($databases);
         $this->open();
@@ -83,7 +85,8 @@ class DataBaseConnection
      */
     function prepare()
     {
-        if ($this->type) {
+        if ($this->type == "Debug") {
+            define("DEBUG", true);
             error_reporting(E_ALL);
             ini_set("display_errors", 1);
         }

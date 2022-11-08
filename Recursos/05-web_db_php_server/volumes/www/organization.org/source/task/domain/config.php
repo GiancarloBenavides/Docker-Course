@@ -1,5 +1,7 @@
 <?php
 
+namespace task\domain\config;
+
 /** 
  * TODO-GNX
  * PHP Version 7.4
@@ -22,32 +24,36 @@ class ConfigurationScope
 {
     public $folder;
     public $file_extension;
-    public $wipe;
+    public $wipes;
     public $scope;
 
 
     /**
      * DataBaseConnection class constructor.
      */
-    public function __construct()
+    public function __construct(string $folder = "../config")
     {
-        $this->folder = "../config";
+        $this->folder = $folder;
         $this->file_extension = "php";
-        $this->wipe = array("databases");
+        $this->wipes = array("databases");
         $this->scope = array();
-        $this->load();
+        $this->load($this->folder);
     }
 
     /**
      * load config
      * @return boolean
      */
-    function load()
+    function load(string $folder)
     {
-        $search_pattern = $this->folder . "/*" . $this->file_extension;
+        $search_pattern = $folder . "/*." . $this->file_extension;
         $paths = glob($search_pattern);
-        if ($index = array_search($this->folder . "/databases.php", $paths)) {
-            unset($paths[$index]);
+        foreach ($this->wipes as $wipe) {
+            $erase = $folder . "/" . $wipe . "." . $this->file_extension;
+            if (!(array_search($erase, $paths) === false)) {
+                $index = array_search($erase, $paths);
+                unset($paths[$index]);
+            }
         }
         foreach ($paths as $path) {
             $file = explode(".", basename($path))[0];
