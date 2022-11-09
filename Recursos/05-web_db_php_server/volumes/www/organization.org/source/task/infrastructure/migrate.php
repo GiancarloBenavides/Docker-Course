@@ -1,6 +1,6 @@
 <?php
 
-namespace task\infrastructure\migration;
+namespace task\infrastructure\migrate;
 
 /** 
  * TODO-GNX
@@ -11,9 +11,14 @@ namespace task\infrastructure\migration;
  * @copyright 2020 GNC
  */
 
-use task\domain\connect;
-use task\domain\config;
-$msj = include(realpath(dirname(__FILE__) . "/../config") . "/messages.php");
+use task\infrastructure\config as cnf;
+use task\infrastructure\connect;
+
+include_once(realpath(dirname(__FILE__)) . "/config.php");
+echo $cnf->files->bounded;
+include_once("./connect.php");
+
+
 
 /**
  * Migrate to a database.
@@ -35,39 +40,65 @@ class DataBaseMigration
     /**
      * DataBaseConnection class constructor.
      */
-    public function __construct(string $basename, string $dirname, string $type = "down", bool $include_data = false)
+    public function __construct(object $dbc, object $cnf)
     {
-        $databases = include(realpath(dirname(__FILE__) . "/../config") . "/databases.php");
-        $this->folder = $dirname;
-        $this->file = $basename;
-        $this->type = $type;
-        $this->data = $include_data;
-        if ($this->type == "up") {
-            $this->up();
-        } else {
-            $this->up();
-        }
+        //$databases = include(realpath(dirname(__FILE__) . "/../config") . "/databases.php");
+        $this->folder = $cnf->files->scripts;
+        $this->basename = array("up", "down");
+        //$this->type = $type;
+        //$this->data = $include_data;
+        $this->down($dbc->resource, $cnf, "scheme");
     }
 
-    public function up()
+    public function up($db, bool $include_data = false)
     {
+        if ($this->type == "up") {
+            $filename = $this->folder . "/" . $this->basename[0];
+            $scheme_sql = $filename . "-scheme.sql";
+            $data_sql = $filename . "-data.sql";
+            //$this->up();
+        } else {
+        }
         global $msj;
         $scheme_sql = file_get_contents($this->folder . "/" . $this->file);
-        $dbc = new connect\DataBaseConnection();
-        $result = pg_query($dbc->resource, $scheme_sql);
+        $result = pg_query($db, $scheme_sql);
         if (!$result) {
             echo $msj->query_error . pg_last_error();
         }
         if ($this->data) {
             $data_sql = file_get_contents($this->folder . "/" . $this->file);
-            $result = pg_query($dbc->resource, $data_sql);
+            $result = pg_query($db, $data_sql);
             if (!$result) {
                 echo $msj->query_error . pg_last_error();
             }
         }
     }
 
-    public function down()
+    public function down($db, object $config, string $type = "scheme")
     {
+        $today = date("Y-m-d", time());
+        $filename = $this->folder . "/" . $today;
+        if (($type == "scheme") or ($type == "both")) {
+            $scheme_sql = $filename . "-" . pg_dbname($db) . "-scheme.sql";
+            $result = pg_query($db, $config->statements->scheme);
+            if (!$result) {
+                echo $config->msj->query_error . pg_last_error();
+                return false;
+            }
+            $sql_file = fopen($scheme_sql, "w");
+            fwrite($sql_file, "--hola mundo");
+            fclose($sql_file);
+        }
+        if (($type == "data") or ($type == "both")) {
+            $data_sql = $filename . "-" . pg_dbname($db) . "-data.sql";
+            $result = pg_query($db, $config->statements->scheme);
+            if (!$result) {
+                echo $config->msj->query_error . pg_last_error();
+                return false;
+            }
+            $sql_file = fopen($data_sql, "w");
+            fwrite($sql_file, "--hola mundo");
+            fclose($sql_file);
+        }
     }
 }

@@ -27,3 +27,17 @@ if (!$result) {
 
 
 echo "<br>----- END -----";
+
+
+// echo "<br>";
+// echo $_SERVER['SCRIPT_FILENAME'];
+
+
+// echo "<br>";
+// $_SERVER['SCRIPT_FILENAME'] = __FILE__;
+// echo "<br>";
+// echo "rp:" . realpath("../../../");
+// echo "<br>";
+// echo $_SERVER['SCRIPT_FILENAME'];
+
+// print_r($msj->db_error);

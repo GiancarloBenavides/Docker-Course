@@ -25,4 +25,6 @@ return (object) array(
     "delete" => 'DELETE FROM table_name WHERE id = $1',
     "substitute" => 'UPDATE table_name SET description = $1 WHERE id = $2',
     "read_o" => 'SELECT * FROM table_name ORDER WHERE id = $1',
+    "scheme" => 'SELECT schema_name FROM information_schema.schemata',
+    "data" => 'SELECT * FROM table_name ORDER WHERE id = $1',
 );

@@ -11,8 +11,6 @@ namespace task\infrastructure\connect;
  * @copyright 2020 GNC
  */
 
-$msj = include(realpath(dirname(__FILE__) . "/config") . "/messages.php");
-
 
 /**
  * Connect to a database.
@@ -35,7 +33,7 @@ class DataBaseConnection
     /**
      * DataBaseConnection class constructor.
      */
-    public function __construct()
+    public function __construct(object $cnf)
     {
         $databases = include(realpath(dirname(__FILE__) . "/config") . "/databases.php");
         $this->error = False;
@@ -43,16 +41,15 @@ class DataBaseConnection
         $this->type = ($databases->debug == true) ? "Debug" : "Not Debug";
         $this->prepare();
         $this->connection_string = $this->build($databases);
-        $this->open();
+        $this->open($cnf->messages);
     }
 
     /**
      * Connect to a database
      * @return boolean
      */
-    function open()
+    function open($msj)
     {
-        global $msj;
         if (!($this->resource = pg_connect($this->connection_string))) {
             $this->error = $msj->db_error . pg_last_error();
             $this->state = "Close";

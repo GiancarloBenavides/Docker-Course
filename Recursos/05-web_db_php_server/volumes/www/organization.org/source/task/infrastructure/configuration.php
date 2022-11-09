@@ -1,6 +1,6 @@
 <?php
 
-namespace task\infrastructure\config;
+namespace task\infrastructure\configuration;
 
 /** 
  * TODO-GNX
